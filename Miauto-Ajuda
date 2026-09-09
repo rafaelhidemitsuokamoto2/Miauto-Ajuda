@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Miauto Ajuda — cuidado pra quem tem pata</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#1B2420; --ink-soft:#4C5A52; --pine:#16332B; --pine-700:#1F4438;
+    --marigold:#F2A63C; --marigold-dark:#D98B22; --coral:#E85C4A;
+    --paper:#FBF7EC; --paper-dim:#F1EADA; --line:#DCD3BC; --white:#fff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.5;}
+  h1,h2,h3{font-family:'Fraunces',serif;color:var(--pine);margin:0;font-weight:600;line-height:1.15;}
+  a{color:inherit;text-decoration:none;cursor:pointer;}
+  button{font-family:inherit;cursor:pointer;}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 24px;font-weight:700;font-size:15px;border:1.5px solid transparent;}
+  .btn-primary{background:var(--pine);color:var(--paper);}
+  .btn-accent{background:var(--marigold);color:var(--pine);}
+  .btn-ghost{background:transparent;color:var(--pine);border-color:var(--pine);}
+  .btn-block{width:100%;}
+  .nav{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);z-index:10;}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .brand{display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:var(--pine);}
+  .nav-links{display:flex;align-items:center;gap:22px;font-weight:700;font-size:14px;}
+  .nav-links a:hover{color:var(--coral);}
+  .hero{padding:64px 0 80px;display:grid;grid-template-columns:1fr;gap:20px;}
+  .hero h1{font-size:clamp(32px,6vw,50px);max-width:14ch;}
+  .hero p{margin-top:16px;color:var(--ink-soft);font-size:17px;max-width:44ch;}
+  .hero .actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .section{padding:64px 0;}
+  .section-alt{background:var(--paper-dim);}
+  .section h2{font-size:28px;margin-bottom:8px;}
+  .section > .container > p.lead{color:var(--ink-soft);margin-bottom:32px;max-width:50ch;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px;}
+  .card h3{font-size:18px;margin-bottom:6px;}
+  .card p{color:var(--ink-soft);font-size:14px;}
+  .cta{background:var(--pine);color:var(--paper);border-radius:20px;padding:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .cta h2{color:var(--paper);font-size:24px;}
+  .cta p{color:#C9D6CE;margin-top:6px;}
+  .footer{background:var(--pine);color:#C9D6CE;padding:30px 0;margin-top:60px;font-size:13px;}
+  .auth-wrap{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:60px 20px;}
+  .auth-box{width:100%;max-width:380px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:36px;}
+  .auth-box h1{font-size:26px;}
+  .auth-box .sub{color:var(--ink-soft);font-size:14px;margin-top:6px;}
+  .field{margin-top:18px;}
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--pine);margin-bottom:6px;}
+  .field input, .field select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);}
+  .error-box{margin-top:16px;background:#FBEAE7;border:1px solid #F0B3A9;color:#A3402F;padding:10px 12px;border-radius:8px;font-size:13px;}
+  .switch{margin-top:18px;font-size:13px;color:var(--ink-soft);text-align:center;}
+  .switch a{color:var(--coral);font-weight:700;}
+  .painel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:32px;}
+  .painel-head h1{font-size:30px;}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--marigold);color:var(--pine);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;}
+  .painel-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start;}
+  .pedido-item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+  .pedido-item .info{flex:1;}
+  .pedido-item .servico{font-weight:700;font-size:14px;}
+  .pedido-item .data{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .status{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;}
+  .status-pendente{background:#FBF0D9;color:#8A6110;}
+  .status-confirmado{background:#E4EFE4;color:#2F6B3A;}
+  .cancelar{background:none;border:none;color:var(--ink-soft);font-size:12px;text-decoration:underline;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .nav-toggle{display:none;}
+  @media (min-width:760px){
+    .hero{grid-template-columns:1.1fr 0.7fr;align-items:center;}
+  }
+  @media (max-width:760px){
+    .grid3{grid-template-columns:1fr;}
+    .painel-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .nav-links{position:absolute;top:72px;left:0;right:0;background:var(--paper);flex-direction:column;align-items:flex-start;gap:2px;padding:10px 24px 20px;border-bottom:1px solid var(--line);display:none;}
+    .nav-links.open{display:flex;}
+    .nav-links a, .nav-links .btn{width:100%;padding:10px 0;}
+    .nav-toggle{display:flex;flex-direction:column;gap:4px;background:none;border:none;width:36px;height:36px;justify-content:center;}
+    .nav-toggle span{height:2px;background:var(--pine);border-radius:2px;}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// ---------- "banco de dados" simples no localStorage ----------
+const DB_KEY = 'miauto:db';
+const SESSION_KEY = 'miauto:sessao';
+
+function readDB(){
+  const raw = localStorage.getItem(DB_KEY);
+  if (raw) return JSON.parse(raw);
+  const seed = {
+    usuarios: [{ id:'u1', nome:'Ana Souza', email:'ana@exemplo.com', senha:'123456', telefone:'(11) 99999-0000' }],
+    pedidos: [
+      { id:'p1', usuarioId:'u1', servico:'Banho & Tosa', pet:'Toby', data:'2026-09-12', horario:'10:00', status:'confirmado' },
+      { id:'p2', usuarioId:'u1', servico:'Veterinário', pet:'Mimi', data:'2026-09-20', horario:'15:30', status:'pendente' },
+    ],
+  };
+  localStorage.setItem(DB_KEY, JSON.stringify(seed));
+  return seed;
+}
+function writeDB(db){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+function uid(p){ return p + Date.now().toString(36) + Math.floor(Math.random()*1000); }
+
+function login({email, senha}){
+  const db = readDB();
+  const usuario = db.usuarios.find(u => u.email === email && u.senha === senha);
+  if (!usuario) return { ok:false, erro:'E-mail ou senha incorretos.' };
+  return { ok:true, usuario };
+}
+function registrar({nome, email, senha, telefone}){
+  const db = readDB();
+  if (db.usuarios.some(u => u.email === email)) return { ok:false, erro:'Já existe uma conta com esse e-mail.' };
+  const usuario = { id: uid('u'), nome, email, senha, telefone };
+  db.usuarios.push(usuario);
+  writeDB(db);
+  return { ok:true, usuario };
+}
+function listarPedidos(usuarioId){
+  return readDB().pedidos.filter(p => p.usuarioId === usuarioId);
+}
+function criarPedido(pedido){
+  const db = readDB();
+  const novo = { id: uid('p'), status:'pendente', ...pedido };
+  db.pedidos.push(novo);
+  writeDB(db);
+  return novo;
+}
+function removerPedido(id){
+  const db = readDB();
+  db.pedidos = db.pedidos.filter(p => p.id !== id);
+  writeDB(db);
+}
+
+// ---------- roteamento simples por hash (#/, #/entrar, #/cadastro, #/painel) ----------
+function useHashRoute(){
+  const [rota, setRota] = useState(window.location.hash.replace('#','') || '/');
+  useEffect(() => {
+    const onHash = () => setRota(window.location.hash.replace('#','') || '/');
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+  return rota;
+}
+function irPara(rota){ window.location.hash = rota; }
+
+// ---------- ícone de pata reutilizável ----------
+function Pata(props){
+  return (
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <ellipse cx="14" cy="18" rx="6.2" ry="4.8" />
+      <ellipse cx="6.5" cy="10.5" rx="2.6" ry="3.3" />
+      <ellipse cx="21.5" cy="10.5" rx="2.6" ry="3.3" />
+      <ellipse cx="10.5" cy="6" rx="2.3" ry="3" />
+      <ellipse cx="17.5" cy="6" rx="2.3" ry="3" />
+    </svg>
+  );
+}
+
+// ---------- Navbar ----------
+function Navbar({usuario, sair}){
+  const [aberto, setAberto] = useState(false);
+  return (
+    <header className="nav">
+      <div className="container nav-row">
+        <a className="brand" onClick={() => { irPara('/'); setAberto(false); }}>
+          <Pata style={{color:'var(--marigold-dark)'}} /> Miauto Ajuda
+        </a>
+        <button className="nav-toggle" onClick={() => setAberto(v => !v)} aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <nav className={"nav-links" + (aberto ? " open" : "")}>
+          <a onClick={() => { irPara('/'); setAberto(false); }}>Início</a>
+          {usuario ? (
+            <>
+              <a onClick={() => { irPara('/painel'); setAberto(false); }}>Meu painel</a>
+              <button className="btn btn-ghost" onClick={() => { sair(); setAberto(false); irPara('/'); }}>Sair</button>
+            </>
+          ) : (
+            <>
+              <a onClick={() => { irPara('/entrar'); setAberto(false); }}>Entrar</a>
+              <button className="btn btn-accent" onClick={() => { irPara('/cadastro'); setAberto(false); }}>Criar conta</button>
+            </>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function Footer(){
+  return (
+    <footer className="footer">
+      <div className="container">
+        Miauto Ajuda — front-end em React, back-end em Node.js a caminho.
+      </div>
+    </footer>
+  );
+}
+
+// ---------- Home ----------
+const SERVICOS = [
+  ['Pet Shop', 'Ração, petiscos e brinquedos pra quem tem pata.'],
+  ['Banho & Tosa', 'Agende o horário certo e deixe o resto com a gente.'],
+  ['Veterinário', 'Consultas e vacinas marcadas em poucos cliques.'],
+  ['Hospedagem', 'Um lugar de confiança pra quando você precisar viajar.'],
+  ['Adestramento', 'Parceiros pra ensinar boas manias, do jeito certo.'],
+  ['Passeio', 'Rotina de exercício sem tirar seu tempo do dia.'],
+];
+
+function Home({usuario}){
+  return (
+    <>
+      <section className="container hero">
+        <div>
+          <h1>Tudo para o seu pet, organizado num só lugar.</h1>
+          <p>A Miauto Ajuda reúne pet shop, banho e tosa, veterinário e hospedagem numa plataforma só. Agende e acompanhe tudo pelo seu painel.</p>
+          <div className="actions">
+            {usuario ? (
+              <button className="btn btn-primary" onClick={() => irPara('/painel')}>Ir para o meu painel</button>
+            ) : (
+              <>
+                <button className="btn btn-primary" onClick={() => irPara('/cadastro')}>Criar minha conta</button>
+                <button className="btn btn-ghost" onClick={() => irPara('/entrar')}>Já tenho conta</button>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <h2>O que você encontra por aqui</h2>
+          <p className="lead">Serviços pensados para cada etapa da rotina do seu pet.</p>
+          <div className="grid3">
+            {SERVICOS.map(([nome, desc]) => (
+              <div className="card" key={nome}>
+                <Pata style={{color:'var(--coral)', marginBottom:10}} />
+                <h3>{nome}</h3>
+                <p>{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container cta">
+          <div>
+            <h2>Nunca mais esqueça o horário do banho.</h2>
+            <p>Crie sua conta gratuita e organize os cuidados do seu pet hoje mesmo.</p>
+          </div>
+          <button className="btn btn-accent" onClick={() => irPara(usuario ? '/painel' : '/cadastro')}>
+            {usuario ? 'Meu painel' : 'Começar agora'}
+          </button>
+        </div>
+      </section>
+    </>
+  );
+}
+
+// ---------- Login ----------
+function Login({entrar}){
+  const [form, setForm] = useState({email:'', senha:''});
+  const [erro, setErro] = useState('');
+
+  function onSubmit(e){
+    e.preventDefault();
+    const res = entrar(form);
+    if (res.ok) irPara('/painel'); else setErro(res.erro);
+  }
+
+  return (
+    <div className="auth-wrap">
+      <form className="auth-box" onSubmit={onSubmit}>
+        <h1>Entrar</h1>
+        <p className="sub">Conta de teste: ana@exemplo.com / 123456</p>
+        <div className="field">
+          <label>E-mail</label>
+          <input type="email" required value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+        </div>
+        <div className="field">
+          <label>Senha</label>
+          <input type="password" required value={form.senha} onChange={e => setForm({...form, senha:e.target.value})} />
+        </div>
+        {erro && <p className="error-box">{erro}</p>}
+        <button className="btn btn-primary btn-block" style={{marginTop:22}} type="submit">Entrar</button>
+        <p className="switch">Ainda não tem conta? <a onClick={() => irPara('/cadastro')}>Cadastre-se</a></p>
+      </form>
+    </div>
+  );
+}
+
+// ---------- Cadastro ----------
+function Cadastro({cadastrar}){
+  const [form, setForm] = useState({nome:'', email:'', telefone:'', senha:''});
+  const [erro, setErro] = useState('');
+
+  function onSubmit(e){
+    e.preventDefault();
+    const res = cadastrar(form);
+    if (res.ok) irPara('/painel'); else setErro(res.erro);
+  }
+
+  return (
+    <div className="auth-wrap">
+      <form className="auth-box" onSubmit={onSubmit}>
+        <h1>Criar conta</h1>
+        <p className="sub">Leva menos de um minuto.</p>
+        <div className="field">
+          <label>Nome</label>
+          <input type="text" required value={form.nome} onChange={e => setForm({...form, nome:e.target.value})} />
+        </div>
+        <div className="field">
+          <label>E-mail</label>
+          <input type="email" required value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+        </div>
+        <div className="field">
+          <label>Telefone</label>
+          <input type="tel" placeholder="(11) 99999-0000" value={form.telefone} onChange={e => setForm({...form, telefone:e.target.value})} />
+        </div>
+        <div className="field">
+          <label>Senha</label>
+          <input type="password" required minLength={6} value={form.senha} onChange={e => setForm({...form, senha:e.target.value})} />
+        </div>
+        {erro && <p className="error-box">{erro}</p>}
+        <button className="btn btn-primary btn-block" style={{marginTop:22}} type="submit">Criar conta</button>
+        <p className="switch">Já tem conta? <a onClick={() => irPara('/entrar')}>Entrar</a></p>
+      </form>
+    </div>
+  );
+}
+
+// ---------- Painel (logado) ----------
+const LISTA_SERVICOS = SERVICOS.map(s => s[0]);
+const PEDIDO_VAZIO = { servico: LISTA_SERVICOS[0], pet:'', data:'', horario:'' };
+
+function formatarData(iso){
+  if (!iso) return '';
+  const [ano, mes, dia] = iso.split('-');
+  return `${dia}/${mes}/${ano}`;
+}
+
+function Painel({usuario}){
+  const [pedidos, setPedidos] = useState(() => listarPedidos(usuario.id));
+  const [novo, setNovo] = useState(PEDIDO_VAZIO);
+
+  function onAgendar(e){
+    e.preventDefault();
+    if (!novo.pet || !novo.data || !novo.horario) return;
+    const pedido = criarPedido({...novo, usuarioId: usuario.id});
+    setPedidos(p => [...p, pedido]);
+    setNovo(PEDIDO_VAZIO);
+  }
+
+  function onCancelar(id){
+    removerPedido(id);
+    setPedidos(p => p.filter(x => x.id !== id));
+  }
+
+  const ordenados = [...pedidos].sort((a,b) => (a.data+a.horario).localeCompare(b.data+b.horario));
+
+  return (
+    <div className="container" style={{padding:'48px 24px 80px'}}>
+      <div className="painel-head">
+        <div>
+          <h1>Olá, {usuario.nome.split(' ')[0]}.</h1>
+          <p style={{color:'var(--ink-soft)', marginTop:8}}>Acompanhe seus agendamentos e marque novos serviços.</p>
+        </div>
+        <div style={{display:'flex', alignItems:'center', gap:10}}>
+          <span className="avatar">{usuario.nome[0].toUpperCase()}</span>
+          <div>
+            <div style={{fontWeight:700, fontSize:13}}>{usuario.nome}</div>
+            <div style={{fontSize:12, color:'var(--ink-soft)'}}>{usuario.email}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="painel-grid">
+        <div className="card">
+          <h3>Meus pedidos</h3>
+          {ordenados.length === 0 ? (
+            <p style={{color:'var(--ink-soft)', marginTop:14, fontSize:14}}>Você ainda não tem agendamentos. Marque um serviço ao lado.</p>
+          ) : (
+            <div style={{marginTop:14}}>
+              {ordenados.map(p => (
+                <div className="pedido-item" key={p.id}>
+                  <Pata style={{color:'var(--coral)', flexShrink:0}} />
+                  <div className="info">
+                    <div className="servico">{p.servico} — {p.pet}</div>
+                    <div className="data">{formatarData(p.data)} às {p.horario}</div>
+                  </div>
+                  <span className={"status status-" + p.status}>{p.status === 'confirmado' ? 'Confirmado' : 'Pendente'}</span>
+                  <button className="cancelar" onClick={() => onCancelar(p.id)}>Cancelar</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="card">
+          <h3>Agendar serviço</h3>
+          <form onSubmit={onAgendar} style={{marginTop:14}}>
+            <div className="field">
+              <label>Serviço</label>
+              <select value={novo.servico} onChange={e => setNovo({...novo, servico:e.target.value})}>
+                {LISTA_SERVICOS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div className="field">
+              <label>Nome do pet</label>
+              <input type="text" required value={novo.pet} onChange={e => setNovo({...novo, pet:e.target.value})} />
+            </div>
+            <div className="field-row" style={{marginTop:18}}>
+              <div className="field" style={{marginTop:0}}>
+                <label>Data</label>
+                <input type="date" required value={novo.data} onChange={e => setNovo({...novo, data:e.target.value})} />
+              </div>
+              <div className="field" style={{marginTop:0}}>
+                <label>Horário</label>
+                <input type="time" required value={novo.horario} onChange={e => setNovo({...novo, horario:e.target.value})} />
+              </div>
+            </div>
+            <button className="btn btn-accent btn-block" style={{marginTop:22}} type="submit">Confirmar agendamento</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------- App raiz ----------
+function App(){
+  const rota = useHashRoute();
+  const [usuario, setUsuario] = useState(() => {
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  });
+
+  function entrar(dados){
+    const res = login(dados);
+    if (res.ok) { setUsuario(res.usuario); localStorage.setItem(SESSION_KEY, JSON.stringify(res.usuario)); }
+    return res;
+  }
+  function cadastrar(dados){
+    const res = registrar(dados);
+    if (res.ok) { setUsuario(res.usuario); localStorage.setItem(SESSION_KEY, JSON.stringify(res.usuario)); }
+    return res;
+  }
+  function sair(){
+    setUsuario(null);
+    localStorage.removeItem(SESSION_KEY);
+  }
+
+  let pagina;
+  if (rota === '/entrar') pagina = <Login entrar={entrar} />;
+  else if (rota === '/cadastro') pagina = <Cadastro cadastrar={cadastrar} />;
+  else if (rota === '/painel') pagina = usuario ? <Painel usuario={usuario} /> : <Login entrar={entrar} />;
+  else pagina = <Home usuario={usuario} />;
+
+  return (
+    <>
+      <Navbar usuario={usuario} sair={sair} />
+      {pagina}
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
